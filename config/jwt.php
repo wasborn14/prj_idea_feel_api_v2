@@ -102,6 +102,8 @@ return [
     */
 
     'ttl' => env('JWT_TTL', 60),
+    // tokenのrefresh確認のために１分に設定
+    // 'ttl' => env('JWT_TTL', 1),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,6 +123,8 @@ return [
     */
 
     'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+    // tokenのrefresh確認のために１分に設定
+    // 'refresh_ttl' => env('JWT_REFRESH_TTL', 1),
 
     /*
     |--------------------------------------------------------------------------
@@ -217,7 +221,9 @@ return [
     |
     */
 
-    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    // tokenのブラックリストの解除
+    // 'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
 
     /*
     | -------------------------------------------------------------------------

@@ -6,6 +6,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use \Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Validator;
 
 class VerifyEmailController extends Controller
 {
@@ -15,15 +18,26 @@ class VerifyEmailController extends Controller
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            // return redirect(env('FRONT_URL') . '/email/verify/already-success');
-            return redirect("http://localhost:3000/auth/activate");
+            return redirect("http://localhost:3000/auth/alreadyActivated");
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        // return redirect(env('FRONT_URL') . '/email/verify/success');
         return redirect("http://localhost:3000/auth/activate");
+    }
+
+    public function resend(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->input('email'))->first();
+        $user->sendEmailVerificationNotification();
+
+        return response()->json('email resend', Response::HTTP_OK);
     }
 }
