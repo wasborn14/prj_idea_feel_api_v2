@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use \Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,21 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
+// 認証済みのユーザーがアクセスできる範囲
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers\Verified',
+    'prefix' => 'verified'
+], function ($router) {
+    Route::get('test', 'VerifiedTestController@test');
+});
+
+// メール認証要求ページに飛ばす
+Route::get('/verified/notice', function () {
+    return response()->json('user is not verified', Response::HTTP_OK);
+})->name('verification.notice');
+
+// ユーザー登録
 Route::group([
     'middleware' => 'guest',
     'namespace' => 'App\Http\Controllers\Auth',
@@ -38,12 +54,14 @@ Route::group([
     Route::post('register', 'RegisterController@register');
 });
 
-
-// メールアドレス認証メール再送
-Route::post('/email/verify/resend', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
+// メール再送信
+Route::group([
+    'middleware' => 'guest',
+    'namespace' => 'App\Http\Controllers\Auth',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::get('email/resend', 'VerifyEmailController@resend');
+});
 
 // メールアドレス認証
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
