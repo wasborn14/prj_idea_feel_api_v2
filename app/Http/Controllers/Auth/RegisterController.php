@@ -42,9 +42,6 @@ class RegisterController extends Controller
         $user->save();
         event(new Registered($user));
 
-        // // 新規作成後自動ログイン
-        // $this->guard()->login($user);
-
         return response()->json('User registration completed', Response::HTTP_OK);
     }
 }

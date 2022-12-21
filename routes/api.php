@@ -60,7 +60,7 @@ Route::group([
     'namespace' => 'App\Http\Controllers\Auth',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::get('email/resend', 'VerifyEmailController@resend');
+    Route::post('email/resend', 'VerifyEmailController@resend');
 });
 
 // メールアドレス認証
