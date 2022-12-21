@@ -25,7 +25,7 @@ class VerifyEmailController extends Controller
             event(new Verified($user));
         }
 
-        return redirect("http://localhost:3000/auth/activate");
+        return redirect("http://localhost:3000/auth/activated");
     }
 
     public function resend(Request $request)
