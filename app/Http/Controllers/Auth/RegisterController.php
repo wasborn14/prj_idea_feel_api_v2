@@ -25,7 +25,7 @@ class RegisterController extends Controller
         /** @var Illuminate\Validation\Validator $validator */
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required'
         ]);
 
@@ -41,9 +41,6 @@ class RegisterController extends Controller
         ]);
         $user->save();
         event(new Registered($user));
-
-        // // 新規作成後自動ログイン
-        // $this->guard()->login($user);
 
         return response()->json('User registration completed', Response::HTTP_OK);
     }
