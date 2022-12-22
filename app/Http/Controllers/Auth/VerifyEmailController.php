@@ -19,14 +19,14 @@ class VerifyEmailController extends Controller
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(config('app.url') . "/auth/alreadyActivated");
+            return redirect(config('app.front_url') . "/auth/alreadyActivated");
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return redirect(config('app.url') . "/auth/activated");
+        return redirect(config('app.front_url') . "/auth/activated");
     }
 
     public function resend(Request $request)
