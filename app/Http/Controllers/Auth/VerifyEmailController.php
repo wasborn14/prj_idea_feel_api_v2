@@ -5,6 +5,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Helpers\Helper;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use \Symfony\Component\HttpFoundation\Response;
@@ -18,14 +19,14 @@ class VerifyEmailController extends Controller
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect("http://localhost:3000/auth/alreadyActivated");
+            return redirect(config('app.url') . "/auth/alreadyActivated");
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return redirect("http://localhost:3000/auth/activated");
+        return redirect(config('app.url') . "/auth/activated");
     }
 
     public function resend(Request $request)
