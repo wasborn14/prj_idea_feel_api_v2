@@ -67,3 +67,10 @@ Route::group([
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
+
+// パスワード再設定メール送信
+Route::post('password/request', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
+// パスワード再設定
+Route::get('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
+// パスワード再設定api
+Route::post('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPassword']);
