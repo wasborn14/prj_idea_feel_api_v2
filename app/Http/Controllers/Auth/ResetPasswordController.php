@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
         });
 
         if ($reset_password_status == Password::INVALID_TOKEN) {
-            return ['success' => false]; // トークンが異なる場合の処理
+            return ['success' => false]; 
         }
 
         return ['success' => true];
