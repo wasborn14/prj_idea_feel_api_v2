@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -30,7 +32,10 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // // emailが認証済みでない場合、認証要求のページに遷移させる
+        $user = Auth::user();
+        if (!$user->hasVerifiedEmail()){
+            return response()->json(['error' => 'Not Verified'], 401); 
+        }
 
         return $this->respondWithToken($token);
     }
