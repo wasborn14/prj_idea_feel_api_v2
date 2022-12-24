@@ -16,19 +16,24 @@ use \Symfony\Component\HttpFoundation\Response;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// 認証前のユーザーがアクセスできる範囲
 Route::group([
-    'middleware' => 'api',
     'namespace' => 'App\Http\Controllers\Auth',
     'prefix' => 'auth'
 ], function ($router) {
+    Route::post('register', 'RegisterController@register'); 
+    Route::post('email/resend', 'VerifyEmailController@resend');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::post('password/request', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::post('password/reset', 'ResetPasswordController@resetPassword')->name('password.reset');
+
+    // メール認証に必要なルート。実際には遷移することはない
+    Route::get('/verified/notice', function () {
+        return response()->json('user is not verified', Response::HTTP_OK);
+    })->name('verification.notice');
 });
 
 // 認証済みのユーザーがアクセスできる範囲
@@ -40,35 +45,7 @@ Route::group([
     Route::get('test', 'VerifiedTestController@test');
 });
 
-// メール認証要求ページに飛ばす
-Route::get('/verified/notice', function () {
-    return response()->json('user is not verified', Response::HTTP_OK);
-})->name('verification.notice');
-
-// ユーザー登録
-Route::group([
-    'middleware' => 'guest',
-    'namespace' => 'App\Http\Controllers\Auth',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('register', 'RegisterController@register');
-});
-
-// メール再送信
-Route::group([
-    'middleware' => 'guest',
-    'namespace' => 'App\Http\Controllers\Auth',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('email/resend', 'VerifyEmailController@resend');
-});
-
-// メールアドレス認証
+// メールアドレスの認証
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
-
-// パスワード再設定メール送信
-Route::post('password/request', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
-// パスワード再設定
-Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPassword'])->name('password.reset');

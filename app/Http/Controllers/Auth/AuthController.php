@@ -30,7 +30,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // // emailが認証済みでない場合、認証要求のページに遷移させる
+        // emailが認証済みでない場合、認証要求のページに遷移させる
 
         return $this->respondWithToken($token);
     }
