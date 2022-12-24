@@ -30,7 +30,7 @@ Route::group([
     Route::post('password/request', 'ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'ResetPasswordController@resetPassword')->name('password.reset');
 
-    // メール認証に必要なルート。実際には遷移することはない
+    // 認証済みのルートに未承認ユーザーがアクセスした際にこちらにリダイレクトする
     Route::get('/verified/notice', function () {
         return response()->json('user is not verified', Response::HTTP_OK);
     })->name('verification.notice');
