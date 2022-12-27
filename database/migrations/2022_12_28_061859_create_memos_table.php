@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('memos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
