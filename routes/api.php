@@ -45,6 +45,18 @@ Route::group([
     Route::get('test', 'VerifiedTestController@test');
 });
 
+// メモのapi仮作成
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    Route::get('memos', 'MemoController@getAllMemos');
+    Route::get('memos/{id}', 'MemoController@getMemo');
+    Route::post('memos', 'MemoController@createMemo');
+    Route::put('memos/{id}', 'MemoController@updateMemo');
+    Route::delete('memos/{id}','MemoController@deleteMemo');    
+});
+
+
 // メールアドレスの認証
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
     ->middleware(['signed', 'throttle:6,1'])
