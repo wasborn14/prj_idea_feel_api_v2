@@ -12,8 +12,11 @@ class MemoController extends Controller
 {
     public function getAllMemos() {
         // logic to get all memos goes here
-        $user_id = Auth::id();
-        $memos = User::find(1)->memos;
+        // $user_id = Auth::id();
+        // $memos = User::find(1)->memos->where('parent_id', null);
+        // $memos = User::find(1)->memos->where('parent_id', null)->with('child_memos');
+        $memos = Memo::where('user_id', 1)->where('parent_id', null)->with('child_memos')
+          ->with('child_memos.child_memos')->with('child_memos.child_memos.child_memos')->get();
         // $memos = Memo::get()->toJson(JSON_PRETTY_PRINT);
         // return response($memos, 200);
         return response()->json(['data' => $memos], 200); 
@@ -25,6 +28,7 @@ class MemoController extends Controller
         $memo = new Memo;
         $memo->title = $request->title;
         $memo->user_id = 1;
+        $memo->parent_id = 8;
         $memo->save();
   
         return response()->json([
@@ -37,7 +41,7 @@ class MemoController extends Controller
 
         if (Memo::where('id', $id)->exists()) {
             // $memo = Memo::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
-            $user_id = Auth::id();
+            // $user_id = Auth::id();
             $memo = User::find($user_id)->memos->where('id', $id)->toJson(JSON_PRETTY_PRINT);
             return response($memo, 200);
           } else {

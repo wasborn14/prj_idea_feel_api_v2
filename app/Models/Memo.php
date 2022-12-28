@@ -17,4 +17,9 @@ class Memo extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function child_memos()
+    {
+        return $this->hasMany('App\Models\Memo', 'parent_id');
+    }
 }
