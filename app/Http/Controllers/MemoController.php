@@ -28,7 +28,14 @@ class MemoController extends Controller
         $memo = new Memo;
         $memo->title = $request->title;
         $memo->user_id = 1;
-        $memo->parent_id = 8;
+        // $memo->parent_id = 8;
+        $memo->json = [
+          "A" => ["A1", "A2", "A3"],
+          "B" => ["B1", "B2", "B3"],
+          "C" => ["C1", "C2", "C3"],
+          "D" => ["D1", "D2", "D3"],
+        ];
+        // $memo->json = $request->json;
         $memo->save();
   
         return response()->json([
@@ -42,7 +49,8 @@ class MemoController extends Controller
         if (Memo::where('id', $id)->exists()) {
             // $memo = Memo::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
             // $user_id = Auth::id();
-            $memo = User::find($user_id)->memos->where('id', $id)->toJson(JSON_PRETTY_PRINT);
+            // $memo = User::find(1)->memos->where('id', $id)->toJson(JSON_PRETTY_PRINT);
+            $memo = User::find(1)->memos->where('id', $id)->first()->json;
             return response($memo, 200);
           } else {
             return response()->json([
@@ -58,9 +66,12 @@ class MemoController extends Controller
             $memo = Memo::find($id);
             // $memo = User::find(1)->memos;
 
-            Log::debug("info ログ!", [$request->title]);
+            // Log::debug("info ログ!", [$request->title]);
 
-            $memo->title = is_null($request->title) ? $memo->title : $request->title;
+            // $memo->title = is_null($request->title) ? $memo->title : $request->title;
+
+            Log::debug('json', $request->json);
+            $memo->json = is_null($request->json) ? $memo->json : $request->json;
             $memo->save();
       
             return response()->json([
@@ -91,4 +102,3 @@ class MemoController extends Controller
           }
       }
 }
-

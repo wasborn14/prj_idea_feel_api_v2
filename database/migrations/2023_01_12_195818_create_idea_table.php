@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('memos', function (Blueprint $table) {
+        Schema::create('ideas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->json('json')->nullable();
+            $table->json('context')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('parent_id')->references('id')->on('memos');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memos');
+        Schema::dropIfExists('ideas');
     }
 };
