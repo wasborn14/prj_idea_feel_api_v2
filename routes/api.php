@@ -45,6 +45,19 @@ Route::group([
     Route::get('test', 'VerifiedTestController@test');
 });
 
+// アイデアのapi仮作成
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    // Route::get('ideas', 'IdeaController@getAllIdeas');
+    Route::get('ideas/{id}', 'IdeaController@getIdea');
+    Route::post('ideas', 'IdeaController@createIdea');
+    Route::put('ideas/{id}', 'IdeaController@updateIdea');
+    // Route::delete('ideas/{id}','IdeaController@deleteIdea');    
+});
+
+
 // メールアドレスの認証
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
     ->middleware(['signed', 'throttle:6,1'])
