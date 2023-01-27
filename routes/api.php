@@ -45,6 +45,19 @@ Route::group([
     Route::get('test', 'VerifiedTestController@test');
 });
 
+// カテゴリのapi仮作成
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    // Route::get('categories', 'CategoryController@getAllCategories');
+    Route::get('categories/{id}', 'CategoryController@getCategory');
+    Route::post('categories', 'CategoryController@createCategory');
+    Route::put('categories/{id}', 'CategoryController@updateCategory');
+    // Route::delete('categories/{id}','CategoryController@deleteCategory');    
+});
+
+
 // アイデアのapi仮作成
 Route::group([
     'middleware' => 'verified',
