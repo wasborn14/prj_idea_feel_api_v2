@@ -51,9 +51,9 @@ Route::group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     // Route::get('categories', 'CategoryController@getAllCategories');
-    Route::get('categories/{id}', 'CategoryController@getCategory');
+    Route::get('categories', 'CategoryController@getCategory');
     Route::post('categories', 'CategoryController@createCategory');
-    Route::put('categories/{id}', 'CategoryController@updateCategory');
+    Route::put('categories', 'CategoryController@updateCategory');
     // Route::delete('categories/{id}','CategoryController@deleteCategory');    
 });
 

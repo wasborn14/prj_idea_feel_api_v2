@@ -14,7 +14,7 @@ class IdeaController extends Controller
         $user_id = Auth::id();
         $idea = new Idea;
         $idea->user_id = $user_id;
-        $idea->context = $request->context;
+        $idea->context = [];
         // $idea->context = [
         //     "A" => ["A1", "A2", "A3"],
         //     "B" => ["B1", "B2", "B3"],
@@ -23,9 +23,10 @@ class IdeaController extends Controller
         //   ];
         $idea->save();
   
-        return response()->json([
-           "message" => "idea record created"
-        ], 201);
+        // return response()->json([
+        //    "message" => "idea record created"
+        // ], 201);
+        return response($idea->id, 201);
     }
 
     public function getIdea($id) {
