@@ -67,7 +67,7 @@ Route::group([
     Route::get('ideas/{id}', 'IdeaController@getIdea');
     Route::post('ideas', 'IdeaController@createIdea');
     Route::put('ideas/{id}', 'IdeaController@updateIdea');
-    // Route::delete('ideas/{id}','IdeaController@deleteIdea');    
+    Route::delete('ideas/{id}','IdeaController@deleteIdea');    
 });
 
 
