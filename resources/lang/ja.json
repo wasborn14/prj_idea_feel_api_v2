@@ -1,7 +1,7 @@
 {
     "Hello!": "こんにちは",
-    "Verify Email Address": "メールアドレスの確認",
-    "Please click the button below to verify your email address.": "以下をクリックして、メールアドレスの確認を行ってください。",
+    "Verify Email Address": "メールアドレスの認証",
+    "Please click the button below to verify your email address.": "以下をクリックして、メールアドレスの認証を行ってください。",
     "If you did not create an account, no further action is required.": "このメールの内容に身に覚えがない場合は、このまま破棄してください。",
     "Regards": "宜しくお願い致します"
 }
