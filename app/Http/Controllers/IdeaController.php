@@ -15,25 +15,15 @@ class IdeaController extends Controller
         $idea = new Idea;
         $idea->user_id = $user_id;
         $idea->context = [];
-        // $idea->context = [
-        //     "A" => ["A1", "A2", "A3"],
-        //     "B" => ["B1", "B2", "B3"],
-        //     "C" => ["C1", "C2", "C3"],
-        //     "D" => ["D1", "D2", "D3"],
-        //   ];
         $idea->save();
-  
-        // return response()->json([
-        //    "message" => "idea record created"
-        // ], 201);
         return response($idea->id, 201);
     }
 
     public function getIdea($id) {
 
-        if (Idea::where('id', $id)->exists()) {
+        $idea = Idea::find($id);
+        if ($idea->exists()) {
             $user_id = Auth::id();
-            $idea = Idea::find($id);
             if ($idea->user_id === $user_id) {
                 $idea_context = $idea->context; 
                 return response($idea_context, 200);
@@ -53,9 +43,9 @@ class IdeaController extends Controller
 
     public function updateIdea(Request $request, $id) {
 
-        if (Idea::where('id', $id)->exists()) {
+        $idea = Idea::find($id);
+        if ($idea->exists()) {
             $user_id = Auth::id();
-            $idea = Idea::find($id);
             if ($idea->user_id === $user_id) {
                 $idea->context = is_null($request->context) ? $idea->context : $request->context;
                 $idea->save();
@@ -71,37 +61,27 @@ class IdeaController extends Controller
             return response()->json([
                 "message" => "idea not found"
             ], 404);
-              
         }
     }
 
-    // public function getAllMemos() {
-    //     // logic to get all memos goes here
-    //     // $user_id = Auth::id();
-    //     // $memos = User::find(1)->memos->where('parent_id', null);
-    //     // $memos = User::find(1)->memos->where('parent_id', null)->with('child_memos');
-    //     $memos = Memo::where('user_id', 1)->where('parent_id', null)->with('child_memos')
-    //       ->with('child_memos.child_memos')->with('child_memos.child_memos.child_memos')->get();
-    //     // $memos = Memo::get()->toJson(JSON_PRETTY_PRINT);
-    //     // return response($memos, 200);
-    //     return response()->json(['data' => $memos], 200); 
-    //   }
-
-
-    // public function deleteMemo ($id) {
-    //     // logic to delete a memo record goes here
-
-    //     if(Memo::where('id', $id)->exists()) {
-    //         $memo = Memo::find($id);
-    //         $memo->delete();
-      
-    //         return response()->json([
-    //           "message" => "records deleted"
-    //         ], 202);
-    //       } else {
-    //         return response()->json([
-    //           "message" => "Memo not found"
-    //         ], 404);
-    //       }
-    //   }
+    public function deleteIdea ($id) {
+        $idea = Idea::find($id);
+        if($idea->exists()) {
+            $user_id = Auth::id();
+            if ($idea->user_id === $user_id) {
+                $idea->delete();
+                return response()->json([
+                    "message" => "records delete successfully"
+                ], 202);
+            } else {
+                return response()->json([
+                    "message" => "not permission to delete"
+                ], 403); 
+            }
+        } else {
+            return response()->json([
+              "message" => "Memo not found"
+            ], 404);
+        }
+      }
 }
