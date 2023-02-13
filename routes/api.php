@@ -69,7 +69,19 @@ Route::group([
     Route::delete('ideas/{id}','IdeaController@deleteIdea');    
 });
 
-// カテゴリ
+// feel_reason
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    Route::get('feel/reasons', 'FeelReasonController@getFeelReasonList');
+    Route::get('feel/reasons/select', 'FeelReasonController@getFeelReasonSelectList');
+    Route::post('feel/reason', 'FeelReasonController@createFeelReason');
+    Route::put('feel/reason/{id}', 'FeelReasonController@updateFeelReason');
+    Route::delete('feel/reason/{id}','FeelReasonController@deleteFeelReason');
+});
+
+// feel
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',

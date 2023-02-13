@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('feels', function (Blueprint $table) {
+        Schema::create('feel_reasons', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->datetime('date')->comment('日付');
-            $table->TinyInteger('feel')->comment('感情数値'); // 1, 2, 3
-
-            // TODO:feel_reasonとの関連付け予定
-
-            $table->string('memo')->nullable()->comment('メモ');
-            $table->boolean('is_predict')->comment('予測判定'); // True:予測、False:記録 
+            $table->string('title')->nullable()->comment('タイトル');
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feels');
+        Schema::dropIfExists('feel_reasons');
     }
 };

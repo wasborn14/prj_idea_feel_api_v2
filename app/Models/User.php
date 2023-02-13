@@ -89,5 +89,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->hasMany('App\Models\Feel');
     }
+
+    public function feel_reasons()
+    {
+        return $this->hasMany('App\Models\FeelReason');
+    }
 }
 

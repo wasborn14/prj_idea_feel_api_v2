@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Models\Feel;
+use App\Models\FeelReason;
 use App\Models\User;
 
 
@@ -15,6 +16,7 @@ class FeelController extends Controller
 {
     public function createFeel(Request $request) {
         $user_id = Auth::id();
+        $feel_reason = $request->input('reason');
         $date = new Carbon($request->input('date'));
         $format_date = $date->timezone('Asia/Tokyo')->format('Y-m-d');
         $is_predict = $request->input('is_predict');
@@ -26,6 +28,9 @@ class FeelController extends Controller
             $feel->user_id = $user_id;
             $feel->date = $format_date;
             $feel->feel = $request->input('feel');
+            if ($feel_reason != 0) {
+                $new_feel->reason_id = $feel_reason;
+            }
             $feel->memo = $request->input('memo');
             $feel->is_predict = $request->input('is_predict');
             $feel->save();
@@ -39,6 +44,9 @@ class FeelController extends Controller
             $new_feel->user_id = $user_id;
             $new_feel->date = $format_date;
             $new_feel->feel = $request->input('feel');
+            if ($feel_reason != 0) {
+                $new_feel->reason_id = $feel_reason;
+            }
             $new_feel->memo = $request->input('memo');
             $new_feel->is_predict = $request->input('is_predict');
             $new_feel->save();
@@ -89,8 +97,13 @@ class FeelController extends Controller
                     $content->date = $date->format('m/d');
 
                     $detail->feel = $item->feel;
-                    $detail->reason = " 特に無し ";
-                    $detail->memo = $item->memo;
+                    if ($item->reason_id) {
+                        $reason = FeelReason::find($item->reason_id);
+                        $detail->reason = $reason->title;
+                    } else {
+                        $detail->reason = "";
+                    }
+                    $detail->memo = is_null($item->memo) ? "" : $item->memo;
                     $content->detail = $detail;
 
                     $is_exist = true;
