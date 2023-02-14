@@ -66,8 +66,8 @@ class FeelController extends Controller
         $feel_list = [];
         $request_start_date = new Carbon($start_date);
         $request_end_date = new Carbon($end_date);
-        $start_date = $request_start_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
-        $end_date = $request_end_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
+        // $start_date = $request_start_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
+        // $end_date = $request_end_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
 
         // 日付のリスト
         // $date_list = CarbonPeriod::create($start_date, $end_date)->toArray();
@@ -84,7 +84,7 @@ class FeelController extends Controller
         // ], 200);
         
         // debug用
-        return response($start_date, 200);
+        return response("ok", 200);
     }
 
     protected function createFeelList($date_list, $list) {
