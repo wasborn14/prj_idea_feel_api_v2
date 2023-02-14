@@ -70,7 +70,7 @@ class FeelController extends Controller
         $end_date = $request_end_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
 
         // 日付のリスト
-        $date_list = CarbonPeriod::create($start_date, $end_date)->toArray();
+        // $date_list = CarbonPeriod::create($start_date, $end_date)->toArray();
         // feelが存在するリスト
         // $feel_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
         // $predict_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', true)->get();
@@ -84,7 +84,7 @@ class FeelController extends Controller
         // ], 200);
         
         // debug用
-        return response($date_list, 200);
+        return response($start_date, 200);
     }
 
     protected function createFeelList($date_list, $list) {
