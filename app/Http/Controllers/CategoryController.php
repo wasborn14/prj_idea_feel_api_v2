@@ -46,27 +46,5 @@ class CategoryController extends Controller
             ], 200);
         }
         
-
-
-        // if (Category::where('id', $id)->exists()) {
-        //     $user_id = Auth::id();
-        //     $category = Category::find($id);
-        //     if ($category->user_id === $user_id) {
-        //         $category->context = is_null($request->context) ? $category->context : $request->context;
-        //         $category->save();
-        //         return response()->json([
-        //             "message" => "records updated successfully"
-        //         ], 200);
-        //     } else {
-        //         return response()->json([
-        //             "message" => "not permission to edit"
-        //         ], 403); 
-        //     }
-        // } else {
-        //     return response()->json([
-        //         "message" => "Category not found"
-        //     ], 404);
-              
-        // }
     }
 }
