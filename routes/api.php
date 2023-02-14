@@ -45,7 +45,7 @@ Route::group([
     Route::get('test', 'VerifiedTestController@test');
 });
 
-// カテゴリのapi仮作成
+// カテゴリ
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
@@ -57,8 +57,7 @@ Route::group([
     // Route::delete('categories/{id}','CategoryController@deleteCategory');    
 });
 
-
-// アイデアのapi仮作成
+// アイデア
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
@@ -70,6 +69,30 @@ Route::group([
     Route::delete('ideas/{id}','IdeaController@deleteIdea');    
 });
 
+// feel_reason
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    Route::get('feel/reasons', 'FeelReasonController@getFeelReasonList');
+    Route::get('feel/reasons/select', 'FeelReasonController@getFeelReasonSelectList');
+    Route::post('feel/reason', 'FeelReasonController@createFeelReason');
+    Route::put('feel/reason/{id}', 'FeelReasonController@updateFeelReason');
+    Route::delete('feel/reason/{id}','FeelReasonController@deleteFeelReason');
+});
+
+// feel
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    // Route::get('feels', 'FeelController@getAllFeels');
+    Route::get('feels/{start_date}/{end_date}', 'FeelController@getFeelList');
+    // Route::post('feels', 'FeelController@createFeel');
+    Route::post('feel', 'FeelController@createFeel');
+    // Route::put('feels', 'FeelController@updateFeel');
+    // Route::delete('feels/{id}','FeelController@deleteFeel');    
+});
 
 // メールアドレスの認証
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
