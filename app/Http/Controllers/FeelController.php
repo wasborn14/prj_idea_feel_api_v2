@@ -24,7 +24,6 @@ class FeelController extends Controller
 
         if ($feel->exists()) {
             // 同じ日の記録が既に存在する場合
-            $feel = new Feel;
             $feel->user_id = $user_id;
             $feel->date = $format_date;
             $feel->feel = $request->input('feel');
