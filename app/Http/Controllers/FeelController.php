@@ -20,9 +20,10 @@ class FeelController extends Controller
         $date = new Carbon($request->input('date'));
         $format_date = $date->timezone('Asia/Tokyo')->format('Y-m-d');
         $is_predict = $request->input('is_predict');
-        $feel = Feel::where('date', $format_date)->where('is_predict', $is_predict)->first();
+        $feel = Feel::where('date', $format_date)->where('is_predict', $is_predict);
 
         if ($feel->exists()) {
+            $feel = $feel->first();
             // 同じ日の記録が既に存在する場合
             $feel->user_id = $user_id;
             $feel->date = $format_date;
