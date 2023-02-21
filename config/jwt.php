@@ -222,8 +222,9 @@ return [
     */
 
     // tokenのブラックリストの解除
-    // 'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
-    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
+    // TODO: refreshで問題になったらfalseになることを検討
+    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    // 'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
 
     /*
     | -------------------------------------------------------------------------
