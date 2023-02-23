@@ -14,7 +14,7 @@ class IdeaController extends Controller
         $user_id = Auth::id();
         $idea = new Idea;
         $idea->user_id = $user_id;
-        $idea->context = [];
+        $idea->idea_list = [];
         $idea->save();
         return response($idea->id, 201);
     }
@@ -25,14 +25,14 @@ class IdeaController extends Controller
         if ($idea->exists()) {
             $user_id = Auth::id();
             if ($idea->user_id === $user_id) {
-                $idea_context = $idea->context; 
-                return response($idea_context, 200);
+                $idea_list = $idea->idea_list; 
+                return response($idea_list, 200);
             } else {
                 return response()->json([
                     "message" => "not permission to get"
                 ], 403); 
             } 
-            $idea = User::find($user_id)->ideas->where('id', $id)->first()->context;
+            $idea = User::find($user_id)->ideas->where('id', $id)->first()->idea_list;
             return response($idea, 200);
           } else {
             return response()->json([
@@ -47,7 +47,7 @@ class IdeaController extends Controller
         if ($idea->exists()) {
             $user_id = Auth::id();
             if ($idea->user_id === $user_id) {
-                $idea->context = is_null($request->context) ? $idea->context : $request->context;
+                $idea->idea_list = is_null($request->idea_list) ? $idea->idea_list : $request->idea_list;
                 $idea->save();
                 return response()->json([
                     "message" => "records updated successfully"

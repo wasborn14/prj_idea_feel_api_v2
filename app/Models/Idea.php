@@ -11,10 +11,10 @@ class Idea extends Model
 
     protected $table = 'ideas';
   
-    protected $fillable = ['context'];
+    protected $fillable = ['idea_list'];
 
     protected $casts = [
-        'context'  => 'json',
+        'idea_list'  => 'json',
     ];
 
     public function user()

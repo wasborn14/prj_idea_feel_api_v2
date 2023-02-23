@@ -11,10 +11,10 @@ class Category extends Model
 
     protected $table = 'categories';
   
-    protected $fillable = ['context'];
+    protected $fillable = ['category_list'];
 
     protected $casts = [
-        'context'  => 'json',
+        'category_list'  => 'json',
     ];
 
     public function user()
