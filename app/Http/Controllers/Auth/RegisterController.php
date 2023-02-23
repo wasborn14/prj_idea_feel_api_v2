@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use \Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -34,32 +36,35 @@ class RegisterController extends Controller
             return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = new User;
-        $user->fill([
-            'name' =>  $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        $user->save();
-        event(new Registered($user));
+        try {
+            DB::beginTransaction();
 
-        $category = new Category;
-        $category->user_id = $user->id;
-        $category->context = [];
-        $category->save();
+            $user = new User;
+            $user->fill([
+                'name' =>  $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            $user->save();
+            event(new Registered($user));
+    
+            $category = new Category;
+            $category->user_id = $user->id;
+            $category->category_list = [];
+            $category->save();
 
-        return response()->json('User registration completed', Response::HTTP_OK);
+            DB::commit();
+            
+            return response()->json('User registration completed', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+
+            return response()->json([
+                "message" => "User registration failed"
+            ], 500);
+        }
+
     }
 
-        public function createCategory(Request $request) {
-            $user_id = Auth::id();
-            $category = new Category;
-            $category->user_id = $user_id;
-            $category->context = $request->context;
-            $category->save();
-      
-            return response()->json([
-               "message" => "category record created"
-            ], 201);
-        }
 }

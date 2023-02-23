@@ -22,9 +22,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->unsignedBigInteger('reason_id')->nullable();
-            $table->foreign('reason_id')->references('id')->on('feel_reasons');
+            $table->foreign('reason_id')->references('id')->on('feel_reasons')->nullOnDelete();
         });
     }
 

@@ -15,7 +15,7 @@ class CategoryController extends Controller
         $user_id = Auth::id();
         $category = new Category;
         $category->user_id = $user_id;
-        $category->context = $request->context;
+        $category->category_list = $request->category_list;
         $category->save();
   
         return response()->json([
@@ -25,9 +25,9 @@ class CategoryController extends Controller
 
     public function getCategory() {
         $user_id = Auth::id(); 
-        $category_context = Category::where('user_id', $user_id)->first()->context;
+        $category_list = Category::where('user_id', $user_id)->first()->category_list;
 
-        return response($category_context, 200);
+        return response($category_list, 200);
     }
 
     public function updateCategory(Request $request) {
@@ -35,7 +35,7 @@ class CategoryController extends Controller
         try {
             $user_id = Auth::id(); 
             $category = Category::where('user_id', $user_id)->first();
-            $category->context = is_null($request->context) ? $category->context : $request->context;
+            $category->category_list = is_null($request->category_list) ? $category->category_list : $request->category_list;
             $category->save(); 
             return response()->json([
                 "message" => "records updated successfully"
