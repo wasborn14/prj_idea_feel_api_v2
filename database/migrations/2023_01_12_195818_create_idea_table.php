@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->json('context')->nullable();
+            $table->json('idea_list')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
