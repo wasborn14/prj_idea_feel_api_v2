@@ -3,9 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use \Symfony\Component\HttpFoundation\Response;
 
-// not verified user
+// Not verified user
 Route::group([
     'namespace' => 'App\Http\Controllers\Auth',
     'prefix' => 'auth'
@@ -21,9 +20,14 @@ Route::group([
 
     // not verified user redirect
     Route::get('/verified/notice', function () {
-        return response()->json('user is not verified', Response::HTTP_OK);
+        return response()->json('user is not verified', 200);
     })->name('verification.notice');
 });
+
+// Verify email
+Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
 // Category
 Route::group([
@@ -66,8 +70,3 @@ Route::group([
     Route::get('feels/{start_date}/{end_date}', 'FeelController@getFeelList');
     Route::post('feel', 'FeelController@createFeel');
 });
-
-// verify email
-Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
-    ->middleware(['signed', 'throttle:6,1'])
-    ->name('verification.verify');
