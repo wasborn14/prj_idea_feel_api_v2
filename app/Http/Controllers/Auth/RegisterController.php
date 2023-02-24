@@ -43,6 +43,7 @@ class RegisterController extends Controller
         try {
             DB::beginTransaction();
 
+            // Create User
             $user = new User;
             $user->fill([
                 'name' =>  $request->name,
@@ -52,6 +53,7 @@ class RegisterController extends Controller
             $user->save();
             event(new Registered($user));
     
+            // Create Empty Category List
             $category = new Category;
             $category->user_id = $user->id;
             $category->category_list = [];
