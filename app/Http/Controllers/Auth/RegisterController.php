@@ -29,7 +29,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        /** @var Illuminate\Validation\Validator $validator */
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -71,7 +70,9 @@ class RegisterController extends Controller
             );
         }
         
-        return response()->json('User registration completed', 200);
+        return response()->json([
+            "message" => "User registration completed"
+        ], 200);
     }
 
 }

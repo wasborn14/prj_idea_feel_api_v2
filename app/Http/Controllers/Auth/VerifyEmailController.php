@@ -8,7 +8,6 @@ use Illuminate\Routing\Controller;
 use App\Helpers\Helper;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use \Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 
 class VerifyEmailController extends Controller
@@ -39,6 +38,6 @@ class VerifyEmailController extends Controller
         $user = User::where('email', $request->input('email'))->first();
         $user->sendEmailVerificationNotification();
 
-        return response()->json('email resend', Response::HTTP_OK);
+        return response()->json('email resend', 400);
     }
 }

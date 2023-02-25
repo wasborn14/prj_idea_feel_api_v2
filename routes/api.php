@@ -34,9 +34,8 @@ Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    Route::get('categories', 'CategoryController@getCategory');
-    Route::post('categories', 'CategoryController@createCategory');
-    Route::put('categories', 'CategoryController@updateCategory');
+    Route::get('categories', 'CategoryController@getCategoryList');
+    Route::put('categories', 'CategoryController@updateCategoryList');
 });
 
 // Idea
