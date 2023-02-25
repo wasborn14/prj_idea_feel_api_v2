@@ -73,7 +73,7 @@ class CategoryController extends Controller
             Log::error($e->getTraceAsString());
 
             throw new InternalServerErrorException(
-                'Category List を更新できませんでした。',
+                'Category List を更新できませんでした',
                 500,
                 'Internal Server Error'
             );
