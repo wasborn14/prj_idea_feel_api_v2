@@ -14,6 +14,12 @@ use App\Models\User;
 
 class FeelController extends Controller
 {
+    /**
+     * Create Feel
+     *
+     * @return JsonResponse
+     * @throws InternalServerErrorException
+     */
     public function createFeel(Request $request) {
         $user_id = Auth::id();
         $feel_reason = $request->input('reason');
@@ -23,44 +29,69 @@ class FeelController extends Controller
         $feel = Feel::where('date', $format_date)->where('is_predict', $is_predict);
 
         if ($feel->exists()) {
-            $feel = $feel->first();
             // 同じ日の記録が既に存在する場合
-            $feel->user_id = $user_id;
-            $feel->date = $format_date;
-            $feel->feel = $request->input('feel');
-            if ($feel_reason != 0) {
-                $new_feel->reason_id = $feel_reason;
-            }
-            $feel->memo = $request->input('memo');
-            $feel->is_predict = $request->input('is_predict');
-            $feel->save();
+            try {
+                $feel = new Feel;
+                $feel->user_id = $user_id;
+                $feel->date = $format_date;
+                $feel->feel = $request->input('feel');
+                if ($feel_reason != 0) {
+                    $new_feel->reason_id = $feel_reason;
+                }
+                $feel->memo = $request->input('memo');
+                $feel->is_predict = $request->input('is_predict');
+                $feel->save();
+    
+                return response()->json([
+                    "message" => "updated feel record"
+                 ], 201); 
 
-            return response()->json([
-                "message" => "updated feel record"
-             ], 201);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                Log::error($e->getTraceAsString());
+    
+                throw new InternalServerErrorException(
+                    'Failed To Update Category List',
+                    500,
+                    'Internal Server Error'
+                );
+            }
         } else {
             // 同じ日の記録が存在しない場合
-            $new_feel = new Feel;
-            $new_feel->user_id = $user_id;
-            $new_feel->date = $format_date;
-            $new_feel->feel = $request->input('feel');
-            if ($feel_reason != 0) {
-                $new_feel->reason_id = $feel_reason;
+            try {
+                $new_feel = new Feel;
+                $new_feel->user_id = $user_id;
+                $new_feel->date = $format_date;
+                $new_feel->feel = $request->input('feel');
+                if ($feel_reason != 0) {
+                    $new_feel->reason_id = $feel_reason;
+                }
+                $new_feel->memo = $request->input('memo');
+                $new_feel->is_predict = $request->input('is_predict');
+                $new_feel->save();
+    
+                return response()->json([
+                    "message" => "created feel record"
+                 ], 201);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                Log::error($e->getTraceAsString());
+    
+                throw new InternalServerErrorException(
+                    'Failed To Update Category List',
+                    500,
+                    'Internal Server Error'
+                );
             }
-            $new_feel->memo = $request->input('memo');
-            $new_feel->is_predict = $request->input('is_predict');
-            $new_feel->save();
-
-            return response()->json([
-                "message" => "created feel record"
-             ], 201);
         }
-  
-        return response()->json([
-           "message" => "feel record created"
-        ], 201);
     }
 
+    /**
+     * Get Feel List
+     *
+     * @return JsonResponse
+     * @throws InternalServerErrorException
+     */
     public function getFeelList($start_date, $end_date) {
         $user_id = Auth::id(); 
         $feel_list = [];
@@ -84,6 +115,11 @@ class FeelController extends Controller
         ], 200);
     }
 
+    /**
+     * Create Feel List
+     *
+     * @return array
+     */
     protected function createFeelList($date_list, $list) {
         $new_list = [];
 

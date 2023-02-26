@@ -10,26 +10,52 @@ use App\Models\User;
 
 class FeelReasonController extends Controller
 {
+    /**
+     * Create Feel Reason
+     *
+     * @return JsonResponse
+     * @throws InternalServerErrorException
+     */
     public function createFeelReason(Request $request) {
         $user_id = Auth::id();
 
-        $feel_reason = new FeelReason;
-        $feel_reason->title = $request->input('title');
-        $feel_reason->user_id = $user_id;
+        try {
+            $feel_reason = new FeelReason;
+            $feel_reason->title = $request->input('title');
+            $feel_reason->user_id = $user_id;
+            $feel_reason->save();
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
 
-        $feel_reason->save();
+            throw new InternalServerErrorException(
+                'Failed To Create Idea',
+                500,
+                'Internal Server Error'
+            );
+        }
 
         return response()->json([
             "message" => "feel reason created"
          ], 201);
     }
 
+    /**
+     * Get Feel Reason List
+     *
+     * @return array
+     */
     public function getFeelReasonList() {
         $user_id = Auth::id(); 
         $feel_reason_list = FeelReason::where('user_id', $user_id)->get()->toArray();
         return response($feel_reason_list, 200);
     }
 
+    /**
+     * Create Feel Reason Select List
+     *
+     * @return array
+     */
     public function getFeelReasonSelectList() {
         $user_id = Auth::id(); 
         $feel_reason_list = FeelReason::where('user_id', $user_id)->get();
@@ -45,6 +71,13 @@ class FeelReasonController extends Controller
         ], 200);
     }
 
+    /**
+     * Update Feel Reason
+     *
+     * @return JsonResponse
+     * @throws ForbiddenException
+     * @throws NotFoundException 
+     */
     public function updateFeelReason(Request $request, $id) {
         $feel_reason = FeelReason::find($id);
         if ($feel_reason->exists()) {
@@ -56,17 +89,28 @@ class FeelReasonController extends Controller
                     "message" => "records updated successfully"
                 ], 200);
             } else {
-                return response()->json([
-                    "message" => "not permission to edit"
-                ], 403); 
+                throw new ForbiddenException(
+                    'Not Authorized',
+                    403,
+                    'Not Authorized'
+                );
             }
         } else {
-            return response()->json([
-                "message" => "feel reason not found"
-            ], 404);
+            throw new NotFoundException(
+                'Resource Not Found',
+                404,
+                'Does Not Exist This Feel Reason'
+            ); 
         }
     }
 
+    /**
+     * Delete Feel Reason
+     *
+     * @return JsonResponse
+     * @throws ForbiddenException
+     * @throws NotFoundException 
+     */
     public function deleteFeelReason($id) {
         $feel_reason = FeelReason::find($id);
         if($feel_reason->exists()) {
@@ -77,14 +121,18 @@ class FeelReasonController extends Controller
                     "message" => "records delete successfully"
                 ], 202);
             } else {
-                return response()->json([
-                    "message" => "not permission to delete"
-                ], 403); 
+                throw new ForbiddenException(
+                    'Not Authorized',
+                    403,
+                    'Not Authorized'
+                );
             }
         } else {
-            return response()->json([
-              "message" => "Memo not found"
-            ], 404);
+            throw new NotFoundException(
+                'Resource Not Found',
+                404,
+                'Does Not Exist This Feel Reason'
+            ); 
         }
     }
 }
