@@ -25,9 +25,9 @@ class CategoryController extends Controller
 
         if (!isset($category_list)) {
             throw new NotFoundException(
-                'リソースが見つかりませんでした',
+                'Resource Not Found',
                 404,
-                '指定された Category List は存在しません'
+                'Does Not Exist This Category List'
             );
         }
 
@@ -47,9 +47,9 @@ class CategoryController extends Controller
 
         if (!$request->has(['category_list'])) {
             throw new BadRequestException(
-                '必須パラメータが設定されていません',
+                'Required Parameter Not Set',
                 400,
-                'category_list は必須パラメータです'
+                'category_list is required parameter'
             );
         }
 
@@ -59,10 +59,10 @@ class CategoryController extends Controller
 
             if (!$category) {
                 throw new NotFoundException(
-                    'リソースが見つかりませんでした',
+                    'Resource Not Found',
                     404,
-                    '指定された Category List は存在しません'
-                ); 
+                    'Does Not Exist This Category List'
+                );
             }
 
             $category->category_list = is_null($request->category_list) ? $category->category_list : $request->category_list;
@@ -73,7 +73,7 @@ class CategoryController extends Controller
             Log::error($e->getTraceAsString());
 
             throw new InternalServerErrorException(
-                'Category List を更新できませんでした',
+                'Failed To Update Category List',
                 500,
                 'Internal Server Error'
             );

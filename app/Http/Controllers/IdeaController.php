@@ -34,7 +34,7 @@ class IdeaController extends Controller
             Log::error($e->getTraceAsString());
 
             throw new InternalServerErrorException(
-                'Idea を作成できませんでした',
+                'Failed To Create Idea',
                 500,
                 'Internal Server Error'
             );
@@ -60,18 +60,18 @@ class IdeaController extends Controller
                 return response($idea_list, 200);
             } else {
                 throw new ForbiddenException(
-                    '権限がありません',
+                    'Not Authorized',
                     403,
-                    '権限がありません'
+                    'Not Authorized'
                 );
             } 
             $idea = User::find($user_id)->ideas->where('id', $id)->first()->idea_list;
             return response($idea, 200);
           } else {
             throw new NotFoundException(
-                'リソースが見つかりませんでした',
+                'Resource Not Found',
                 404,
-                '指定された Idea は存在しません'
+                'Does Not Exist This Idea'
             ); 
         }
     }
@@ -96,16 +96,16 @@ class IdeaController extends Controller
                 ], 200);
             } else {
                 throw new ForbiddenException(
-                    '権限がありません',
+                    'Not Authorized',
                     403,
-                    '権限がありません'
+                    'Not Authorized'
                 );
             }
         } else {
             throw new NotFoundException(
-                'リソースが見つかりませんでした',
+                'Resource Not Found',
                 404,
-                '指定された Idea は存在しません'
+                'Does Not Exist This Idea'
             ); 
         }
     }
@@ -128,16 +128,16 @@ class IdeaController extends Controller
                 ], 202);
             } else {
                 throw new ForbiddenException(
-                    '権限がありません',
+                    'Not Authorized',
                     403,
-                    '権限がありません'
+                    'Not Authorized'
                 );
             }
         } else {
             throw new NotFoundException(
-                'リソースが見つかりませんでした',
+                'Resource Not Found',
                 404,
-                '指定された Idea は存在しません'
+                'Does Not Exist This Idea'
             ); 
         }
       }
