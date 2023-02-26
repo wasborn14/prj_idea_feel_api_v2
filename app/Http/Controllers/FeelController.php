@@ -103,8 +103,8 @@ class FeelController extends Controller
         // 日付のリスト
         $date_list = CarbonPeriod::create($start_date, $end_date)->toArray();
         // feelが存在するリスト
-        $feel_exist_list = Feel::whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
-        $predict_exist_list = Feel::whereBetween('date', [$start_date, $end_date])->where('is_predict', true)->get();
+        $feel_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
+        $predict_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', true)->get();
 
         $feel_list = $this->createFeelList($date_list, $feel_exist_list);
         $predict_list = $this->createFeelList($date_list, $predict_exist_list);
