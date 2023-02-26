@@ -18,7 +18,7 @@ class FeelController extends Controller
      * Create Feel
      *
      * @return JsonResponse
-     * @throws InternalServerErrCreate
+     * @throws InternalServerErrorException
      */
     public function createFeel(Request $request) {
         $user_id = Auth::id();
@@ -90,7 +90,7 @@ class FeelController extends Controller
      * Get Feel List
      *
      * @return JsonResponse
-     * @throws InternalServerErrCreate
+     * @throws InternalServerErrorException
      */
     public function getFeelList($start_date, $end_date) {
         $user_id = Auth::id(); 

@@ -19,7 +19,7 @@ class IdeaController extends Controller
      * Create Idea
      *
      * @return int
-     * @throws InternalServerErrCreate
+     * @throws InternalServerErrorException
      */
     public function createIdea(Request $request) {
 
