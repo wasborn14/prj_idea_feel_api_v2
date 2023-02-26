@@ -3,20 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use \Symfony\Component\HttpFoundation\Response;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-// 認証前のユーザーがアクセスできる範囲
+// Not verified user
 Route::group([
     'namespace' => 'App\Http\Controllers\Auth',
     'prefix' => 'auth'
@@ -30,46 +18,38 @@ Route::group([
     Route::post('password/request', 'ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'ResetPasswordController@resetPassword')->name('password.reset');
 
-    // 認証済みのルートに未承認ユーザーがアクセスした際にこちらにリダイレクトする
+    // not verified user redirect
     Route::get('/verified/notice', function () {
-        return response()->json('user is not verified', Response::HTTP_OK);
+        return response()->json('user is not verified', 200);
     })->name('verification.notice');
 });
 
-// 認証済みのユーザーがアクセスできる範囲
-Route::group([
-    'middleware' => 'verified',
-    'namespace' => 'App\Http\Controllers\Verified',
-    'prefix' => 'verified'
-], function ($router) {
-    Route::get('test', 'VerifiedTestController@test');
-});
+// Verify email
+Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
-// カテゴリ
+// Category
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    // Route::get('categories', 'CategoryController@getAllCategories');
-    Route::get('categories', 'CategoryController@getCategory');
-    Route::post('categories', 'CategoryController@createCategory');
-    Route::put('categories', 'CategoryController@updateCategory');
-    // Route::delete('categories/{id}','CategoryController@deleteCategory');    
+    Route::get('categories', 'CategoryController@getCategoryList');
+    Route::put('categories', 'CategoryController@updateCategoryList');
 });
 
-// アイデア
+// Idea
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    // Route::get('ideas', 'IdeaController@getAllIdeas');
     Route::get('ideas/{id}', 'IdeaController@getIdea');
     Route::post('ideas', 'IdeaController@createIdea');
     Route::put('ideas/{id}', 'IdeaController@updateIdea');
     Route::delete('ideas/{id}','IdeaController@deleteIdea');    
 });
 
-// feel_reason
+// Feel_reason
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
@@ -81,20 +61,11 @@ Route::group([
     Route::delete('feel/reason/{id}','FeelReasonController@deleteFeelReason');
 });
 
-// feel
+// Feel
 Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    // Route::get('feels', 'FeelController@getAllFeels');
     Route::get('feels/{start_date}/{end_date}', 'FeelController@getFeelList');
-    // Route::post('feels', 'FeelController@createFeel');
     Route::post('feel', 'FeelController@createFeel');
-    // Route::put('feels', 'FeelController@updateFeel');
-    // Route::delete('feels/{id}','FeelController@deleteFeel');    
 });
-
-// メールアドレスの認証
-Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
-    ->middleware(['signed', 'throttle:6,1'])
-    ->name('verification.verify');

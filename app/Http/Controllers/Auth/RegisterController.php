@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserCreateRequest;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Http\RedirectResponse;
+use App\Exceptions\InternalServerErrorException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-use \Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -23,9 +20,15 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    /**
+     * User Registration
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws InternalServerErrorException
+     */
     public function register(Request $request)
     {
-        /** @var Illuminate\Validation\Validator $validator */
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -33,12 +36,13 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->messages(), 422);
         }
 
         try {
             DB::beginTransaction();
 
+            // Create User
             $user = new User;
             $user->fill([
                 'name' =>  $request->name,
@@ -48,23 +52,27 @@ class RegisterController extends Controller
             $user->save();
             event(new Registered($user));
     
+            // Create Empty Category List
             $category = new Category;
             $category->user_id = $user->id;
             $category->category_list = [];
             $category->save();
 
-            DB::commit();
-            
-            return response()->json('User registration completed', Response::HTTP_OK);
+            DB::commit();            
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
 
-            return response()->json([
-                "message" => "User registration failed"
-            ], 500);
+            throw new InternalServerErrorException(
+                'User registration failed',
+                500,
+                'Internal Server Error'
+            );
         }
-
+        
+        return response()->json([
+            "message" => "User registration completed"
+        ], 200);
     }
 
 }
