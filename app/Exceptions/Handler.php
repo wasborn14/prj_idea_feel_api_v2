@@ -115,6 +115,15 @@ class Handler extends ExceptionHandler
             ], $code);
         }
 
+        // Log::debug('class', [$exception]);
+        // Log::debug('exception', [$exception->getMessage()]);
+        
+        if ($exception->getMessage() === "Your email address is not verified.") {
+            return response()->json([
+                    'errMsg'   => '認証エラーが発生しました。再度ログインしなおしてください。'
+                ], 401);
+        }
+
         Log::error(__FILE__ . ':' . __LINE__ . ' 適切なエラーを実装してください(' . $exception->getMessage() . ')');
         Log::error($exception->getTraceAsString());
 
