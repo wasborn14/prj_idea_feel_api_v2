@@ -13,7 +13,6 @@ Route::group([
     Route::post('email/resend', 'VerifyEmailController@resend');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
     Route::post('password/request', 'ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'ResetPasswordController@resetPassword')->name('password.reset');
@@ -22,6 +21,14 @@ Route::group([
     Route::get('/verified/notice', function () {
         return response()->json('user is not verified', 200);
     })->name('verification.notice');
+});
+
+Route::group([
+    'middleware' => 'jwt_auth',
+    'namespace' => 'App\Http\Controllers\Auth',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('refresh', 'RefreshTokenController@refresh');
 });
 
 // Verify email

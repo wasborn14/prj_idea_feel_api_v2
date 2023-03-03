@@ -43,6 +43,21 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUserId()
+    {
+        return  $this->id;
+    }
+
+    public function getUserName()
+    {
+        return $this->name;
+    }
+
+    public function getUserEmail()
+    {
+        return $this->email;
+    }
     
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
