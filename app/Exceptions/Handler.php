@@ -115,8 +115,8 @@ class Handler extends ExceptionHandler
             ], $code);
         }
 
-        // Log::debug('class', [$exception]);
-        // Log::debug('exception', [$exception->getMessage()]);
+        Log::debug('class', [$exception]);
+        Log::debug('exception', [$exception->getMessage()]);
         
         if ($exception->getMessage() === "Your email address is not verified.") {
             return response()->json([
