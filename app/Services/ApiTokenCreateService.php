@@ -78,7 +78,7 @@ class ApiTokenCreateService extends Service
         $data = [
             'sub' => $this->user->getUserId(),
             'iat' => $this->now,
-            'exp' => $this->now + config('jwt.ttl')
+            'exp' => $this->now + config('jwt.ttl') * 60
         ];
 
         return JWTFactory::customClaims($data);
@@ -94,7 +94,7 @@ class ApiTokenCreateService extends Service
         $data = [
             'sub' => $this->user->getUserId(),
             'iat' => $this->now,
-            'exp' => $this->now + config('jwt.refresh_ttl')
+            'exp' => $this->now + config('jwt.refresh_ttl') * 60
         ];
         return JWTFactory::customClaims($data);
     }
