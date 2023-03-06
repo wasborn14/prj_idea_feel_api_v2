@@ -36,6 +36,15 @@ Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailCo
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
 
+// User
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    Route::post('user/name', 'UserController@updateUserName');
+    Route::post('user/password', 'UserController@updateUserPassword');
+});
+
 // Category
 Route::group([
     'middleware' => 'verified',
