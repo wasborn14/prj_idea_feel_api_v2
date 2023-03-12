@@ -25,7 +25,7 @@ class PasswordResetNotification extends ResetPassword
         return (new MailMessage())
                     ->subject('パスワードリセット通知')
                     ->view('emails.password-reset', [
-                        'reset_url' => url(config('app.front_url') . '/auth/resetPassword?token=' . $this->token. '&email=' . $notifiable->getEmailForPasswordReset())
+                        'reset_url' => url(config('app.front_url') . '/auth/resetPassword?token=' . $this->token. '&email=' . urlencode($notifiable->getEmailForPasswordReset()))
                     ]);
     }
 }
