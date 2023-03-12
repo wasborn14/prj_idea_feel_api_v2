@@ -16,6 +16,7 @@ Route::group([
     Route::get('me', 'AuthController@me');
     Route::post('password/request', 'ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'ResetPasswordController@resetPassword')->name('password.reset');
+    Route::get("reset/{token}", "ChangeEmailController@reset");
 
     // not verified user redirect
     Route::get('/verified/notice', function () {
@@ -29,6 +30,7 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('refresh', 'RefreshTokenController@refresh');
+    Route::post('email', 'ChangeEmailController@sendChangeEmailLink');
 });
 
 // Verify email
