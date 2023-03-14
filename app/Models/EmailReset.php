@@ -17,7 +17,7 @@ class EmailReset extends Model
     ];
 
     /**
-     * メールアドレス確定メールを送信
+     * Send Change Email
      *
      * @param [type] $token
      * 
@@ -28,7 +28,7 @@ class EmailReset extends Model
     }
 
     /**
-     * 新しいメールアドレスあてにメールを送信する
+     * Send New Email Address
      *
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return string

@@ -18,14 +18,12 @@ class ChangeEmailController extends Controller
     {
         $new_email = $request->new_email;
 
-        // トークン生成
         $token = hash_hmac(
             'sha256',
             Str::random(40) . $new_email,
             config('app.key')
         );
 
-        // トークンをDBに保存
         DB::beginTransaction();
         try {
             $param = [];
@@ -55,7 +53,7 @@ class ChangeEmailController extends Controller
     }
 
     /**
-     * メールアドレスの再設定処理
+     * Change Email Address
      *
      * @param Request $request
      * @param [type] $token
@@ -66,22 +64,19 @@ class ChangeEmailController extends Controller
             ->where('token', $token)
             ->first();
 
-        // トークンが存在している、かつ、有効期限が切れていないかチェック
         if ($email_resets && !$this->tokenExpired($email_resets->created_at)) {
 
-            // ユーザーのメールアドレスを更新
             $user = User::find($email_resets->user_id);
             $user->email = $email_resets->new_email;
             $user->save();
 
-            // レコードを削除
+            // delete record
             DB::table('email_resets')
                 ->where('token', $token)
                 ->delete();
 
             return redirect(config('app.front_url') . "/auth/completeEmailReset");
         } else {
-            // レコードが存在していた場合削除
             if ($email_resets) {
                 DB::table('email_resets')
                     ->where('token', $token)
@@ -93,14 +88,14 @@ class ChangeEmailController extends Controller
 
 
     /**
-     * トークンが有効期限切れかどうかチェック
+     * Check Token Expired
      *
      * @param  string  $createdAt
      * @return bool
      */
     protected function tokenExpired($createdAt)
     {
-        // トークンの有効期限は60分に設定
+        // setting 60 minutes
         $expires = 60 * 60;
         return Carbon::parse($createdAt)->addSeconds($expires)->isPast();
     }
