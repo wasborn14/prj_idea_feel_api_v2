@@ -36,7 +36,9 @@ class FeelController extends Controller
                 $feel->date = $format_date;
                 $feel->feel = $request->input('feel');
                 if ($feel_reason != 0) {
-                    $new_feel->reason_id = $feel_reason;
+                    $feel->reason_id = $feel_reason;
+                } else {
+                    $feel->reason_id = null;
                 }
                 $feel->memo = $request->input('memo');
                 $feel->is_predict = $request->input('is_predict');
@@ -65,6 +67,8 @@ class FeelController extends Controller
                 $new_feel->feel = $request->input('feel');
                 if ($feel_reason != 0) {
                     $new_feel->reason_id = $feel_reason;
+                } else {
+                    $new_feel->reason_id = null; 
                 }
                 $new_feel->memo = $request->input('memo');
                 $new_feel->is_predict = $request->input('is_predict');
