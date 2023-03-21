@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ideas', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->uuid('id')->primary();
             $table->json('idea_list')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
