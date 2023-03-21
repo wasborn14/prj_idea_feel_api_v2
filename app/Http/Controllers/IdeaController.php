@@ -52,6 +52,7 @@ class IdeaController extends Controller
      */
     public function getIdea($id) {
 
+        Log::debug('id', [$id]);
         $idea = Idea::find($id);
         if ($idea->exists()) {
             $user_id = Auth::id();

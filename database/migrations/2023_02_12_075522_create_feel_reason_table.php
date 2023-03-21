@@ -14,11 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('feel_reasons', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            // $table->bigIncrements('id');
+            $table->uuid('id')->primary();
             $table->string('title')->nullable()->comment('タイトル');
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();;
+            // $table->unsignedBigInteger('user_id');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 

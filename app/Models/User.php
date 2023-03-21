@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\PasswordResetNotification;
+use App\Traits\UUID;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use UUID, HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
