@@ -35,7 +35,7 @@ Route::group([
 
 // Verify email
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
-    ->middleware(['signed', 'throttle:6,1'])
+    ->middleware(['signed', 'throttle:60,1'])
     ->name('verification.verify');
 
 // User
