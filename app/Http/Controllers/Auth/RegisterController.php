@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required'
-        ]);
+        ], ['email.unique' => 'email is already taken']);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
