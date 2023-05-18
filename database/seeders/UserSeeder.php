@@ -21,10 +21,13 @@ class UserSeeder extends Seeder
         DB::table('users')->truncate();
 
         $num = 1;
+        // $uuid = (string)Str::uuid();
+        $uuid = config('const.seeders.uuid');
 
         $users = [];
         for ($i = 1; $i <= $num; $i++) {
             $users[] = [
+                'id' => $uuid,
                 'name' => 'Test User' . $i,
                 'email' => 'ideafeel.app+' . $i . '@gmail.com',
                 'email_verified_at' => '2023-01-01 00:00:00',
