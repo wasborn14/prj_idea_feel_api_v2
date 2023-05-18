@@ -108,4 +108,15 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+    |--------------------------------------------------------------------------
+    | OAuth Password Secret
+    |--------------------------------------------------------------------------
+    |
+    | This string is used to generate the password for the user created with oauth.
+    |
+    */
+
+    'oauth_password_secret' => env('OAUTH_PASSWORD_SECRET', ""),
+
 ];
