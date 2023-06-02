@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Tab;
 use App\Exceptions\InternalServerErrorException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -58,6 +59,12 @@ class RegisterController extends Controller
             $category->user_id = $user->id;
             $category->category_list = [];
             $category->save();
+            
+            // Create Empty Tab List
+            $tab = new Tab;
+            $tab->user_id = $user->id;
+            $tab->tab_list = [];
+            $tab->save();
 
             DB::commit();            
         } catch (\Exception $e) {

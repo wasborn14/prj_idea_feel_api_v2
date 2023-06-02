@@ -111,5 +111,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->hasMany('App\Models\FeelReason');
     }
+
+    public function tabs()
+    {
+        return $this->hasMany('App\Models\Tab');
+    }
 }
 
