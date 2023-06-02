@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('tabs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->json('category_list')->nullable();
+            $table->json('tab_list')->nullable();
             $table->uuid('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('tabs');
     }
 };
