@@ -56,6 +56,15 @@ Route::group([
     Route::put('categories', 'CategoryController@updateCategoryList');
 });
 
+// Tab
+Route::group([
+    'middleware' => 'verified',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    Route::get('tabs', 'TabController@getTabList');
+    Route::put('tabs', 'TabController@updateTabList');
+});
+
 // Idea
 Route::group([
     'middleware' => 'verified',

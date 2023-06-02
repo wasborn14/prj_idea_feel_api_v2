@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ApiTokenCreateService;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Tab;
 
 class AuthController extends Controller
 {
@@ -144,6 +145,12 @@ class AuthController extends Controller
             $category->user_id = $user->id;
             $category->category_list = [];
             $category->save();
+
+            // Create Empty Tab List
+            $tab = new Tab;
+            $tab->user_id = $user->id;
+            $tab->tab_list = [];
+            $tab->save();
 
             DB::commit();            
         } catch (\Exception $e) {
