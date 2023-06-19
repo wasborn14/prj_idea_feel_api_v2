@@ -38,40 +38,40 @@ class FixFeelAtFeelList extends Command
 
         try {
             foreach ($feelList as $feel) {
-                $feel_value = $feel->feel;
+                $feel_value = $feel->value;
                 switch ($feel_value) {
                  case -5:
-                     $feel->feel = 1;
+                     $feel->value = 1;
                      break;
                  case -4:
-                     $feel->feel = 1;
+                     $feel->value = 1;
                      break;
                  case -3:
-                     $feel->feel = 2;
+                     $feel->value = 2;
                      break;
                  case -2:
-                     $feel->feel = 2;
+                     $feel->value = 2;
                      break;
                  case -1:
-                     $feel->feel = 2;
+                     $feel->value = 2;
                      break;
                  case 0:
-                     $feel->feel = 3;
+                     $feel->value = 3;
                      break;
                  case 1:
-                     $feel->feel = 4;
+                     $feel->value = 4;
                      break;
                  case 2:
-                     $feel->feel = 4;
+                     $feel->value = 4;
                      break;
                  case 3:
-                     $feel->feel = 4;
+                     $feel->value = 4;
                      break;
                  case 4:
-                     $feel->feel = 5;
+                     $feel->value = 5;
                      break;
                  case 5:
-                     $feel->feel = 5;
+                     $feel->value = 5;
                      break;
                  default:
                      break;
