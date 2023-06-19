@@ -12,7 +12,7 @@ class Feel extends Model
 
     protected $table = 'feels';
 
-    protected $fillable = ['date', 'feel', 'memo', 'is_predict', 'reason_id'];
+    protected $fillable = ['date', 'value', 'memo', 'is_predict', 'reason_id'];
 
     public function user()
     {
