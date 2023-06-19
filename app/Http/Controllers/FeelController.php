@@ -34,7 +34,7 @@ class FeelController extends Controller
                 $feel = $feel->first();
                 $feel->user_id = $user_id;
                 $feel->date = $format_date;
-                $feel->feel = $request->input('feel');
+                $feel->value = $request->input('value');
                 if ($feel_reason != 0) {
                     $feel->reason_id = $feel_reason;
                 } else {
@@ -64,7 +64,7 @@ class FeelController extends Controller
                 $new_feel = new Feel;
                 $new_feel->user_id = $user_id;
                 $new_feel->date = $format_date;
-                $new_feel->feel = $request->input('feel');
+                $new_feel->value = $request->input('value');
                 if ($feel_reason != 0) {
                     $new_feel->reason_id = $feel_reason;
                 } else {
@@ -136,7 +136,7 @@ class FeelController extends Controller
                     // feelが存在する場合
                     $content->date = $date->format('m/d');
 
-                    $detail->feel = $item->feel;
+                    $detail->value = $item->value;
                     if ($item->reason_id) {
                         $reason = FeelReason::find($item->reason_id);
                         $detail->reason = $reason->title;
