@@ -29,13 +29,7 @@ class FixFeelAtFeelList extends Command
      */
     public function handle()
     {
-        // for ($i = 0; $i < 5; $i++) { 
-        //     echo "Hello✋ n"; 
-        // }
-
         $feelList = Feel::all();
-        Log::debug('debug', [$feelList]);
-
         try {
             foreach ($feelList as $feel) {
                 $feel_value = $feel->value;
@@ -76,7 +70,6 @@ class FixFeelAtFeelList extends Command
                  default:
                      break;
                 }
-                Log::debug('debug', [$feel]);
                 $feel->save();
              }
         } catch (Exception $e) {
