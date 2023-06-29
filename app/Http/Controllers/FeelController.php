@@ -98,7 +98,7 @@ class FeelController extends Controller
      */
     public function getFeelList($start_date, $end_date) {
         $user_id = Auth::id(); 
-        $feel_list = [];
+        $record_list = [];
         $request_start_date = new Carbon($start_date);
         $request_end_date = new Carbon($end_date);
         $start_date = $request_start_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
@@ -107,14 +107,14 @@ class FeelController extends Controller
         // 日付のリスト
         $date_list = CarbonPeriod::create($start_date, $end_date)->toArray();
         // feelが存在するリスト
-        $feel_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
+        $record_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
         $predict_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', true)->get();
 
-        $feel_list = $this->createFeelList($date_list, $feel_exist_list);
+        $record_list = $this->createFeelList($date_list, $record_exist_list);
         $predict_list = $this->createFeelList($date_list, $predict_exist_list);
 
         return response()->json([
-            'feel_list' => $feel_list,
+            'record_list' => $record_list,
             'predict_list' => $predict_list,
         ], 200);
     }
