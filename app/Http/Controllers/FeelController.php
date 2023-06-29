@@ -91,12 +91,12 @@ class FeelController extends Controller
     }
 
     /**
-     * Get Feel List
+     * Get Feel Graph
      *
      * @return JsonResponse
      * @throws InternalServerErrorException
      */
-    public function getFeelList($start_date, $end_date) {
+    public function getFeelGraph($start_date, $end_date) {
         $user_id = Auth::id(); 
         $record_list = [];
         $request_start_date = new Carbon($start_date);
@@ -110,8 +110,8 @@ class FeelController extends Controller
         $record_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', false)->get();
         $predict_exist_list = Feel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date])->where('is_predict', true)->get();
 
-        $record_list = $this->createFeelList($date_list, $record_exist_list);
-        $predict_list = $this->createFeelList($date_list, $predict_exist_list);
+        $record_list = $this->createFeelGraphList($date_list, $record_exist_list);
+        $predict_list = $this->createFeelGraphList($date_list, $predict_exist_list);
 
         return response()->json([
             'record_list' => $record_list,
@@ -124,7 +124,7 @@ class FeelController extends Controller
      *
      * @return array
      */
-    protected function createFeelList($date_list, $list) {
+    protected function createFeelGraphList($date_list, $list) {
         $new_list = [];
 
         foreach ($date_list as $date) {
