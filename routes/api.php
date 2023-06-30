@@ -94,5 +94,6 @@ Route::group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     Route::get('feel/graph/{start_date}/{end_date}', 'FeelController@getFeelGraph');
+    Route::get('feel/list', 'FeelController@getFeelList');
     Route::post('feel', 'FeelController@createFeel');
 });

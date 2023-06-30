@@ -91,6 +91,38 @@ class FeelController extends Controller
     }
 
     /**
+     * Get Feel List
+     *
+     * @return JsonResponse
+     * @throws InternalServerErrorException
+     */
+    public function getFeelList() {
+        $user_id = Auth::id(); 
+
+        // feelが存在するリスト
+        $feel_exist_list = Feel::where('user_id', $user_id)->orderBy('date', 'desc')->get();
+
+        $feel_list = [];
+        foreach ($feel_exist_list as $feel_data) {
+            $feel = new \stdClass();
+            $feel_date = new Carbon($feel_data->date);
+            $feel->date = $feel_date->format('m/d/Y');
+            $feel->value = $feel_data->value;
+            $feel->is_predict = $feel_data->is_predict;
+            $feel->memo = $feel_data->memo;
+            if ($feel_data->reason_id) {
+                $reason = FeelReason::find($feel_data->reason_id);
+                $feel->reason = $reason->title;
+            } else {
+                $feel->reason = "";
+            }
+            array_push($feel_list, $feel);
+        };
+
+        return response()->json($feel_list, 200);
+    }
+
+    /**
      * Get Feel Graph
      *
      * @return JsonResponse
@@ -98,7 +130,6 @@ class FeelController extends Controller
      */
     public function getFeelGraph($start_date, $end_date) {
         $user_id = Auth::id(); 
-        $record_list = [];
         $request_start_date = new Carbon($start_date);
         $request_end_date = new Carbon($end_date);
         $start_date = $request_start_date->timezone('Asia/Tokyo')->format('Y-m-d'); 
