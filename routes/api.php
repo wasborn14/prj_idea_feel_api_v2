@@ -93,6 +93,7 @@ Route::group([
     'middleware' => 'verified',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    Route::get('feels/{start_date}/{end_date}', 'FeelController@getFeelList');
+    Route::get('feel/graph/{start_date}/{end_date}', 'FeelController@getFeelGraph');
+    Route::get('feel/list', 'FeelController@getFeelList');
     Route::post('feel', 'FeelController@createFeel');
 });
