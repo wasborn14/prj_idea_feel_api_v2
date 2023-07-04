@@ -100,7 +100,7 @@ class FeelController extends Controller
         $user_id = Auth::id(); 
 
         // feelが存在するリスト
-        $feel_exist_list = Feel::where('user_id', $user_id)->orderBy('updated_at', 'desc')->orderBy('date', 'desc')->get();
+        $feel_exist_list = Feel::where('user_id', $user_id)->orderBy('date', 'desc')->orderBy('updated_at', 'desc')->get();
 
         $feel_list = [];
         foreach ($feel_exist_list as $feel_data) {
