@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'name' => 'Test User' . $i,
                 'email' => 'ideafeel.app+' . $i . '@gmail.com',
                 'email_verified_at' => '2023-01-01 00:00:00',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('LQVhRB7jGqLg2m'),
                 'created_at' => '2023-01-01 00:00:00',
                 'updated_at' => '2023-01-01 00:00:00',
             ];
